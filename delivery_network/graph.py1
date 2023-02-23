@@ -115,5 +115,4 @@ def graph_from_file(filename):
             node3 = int(lignei[1])
             power_min = int(lignei[2])
             G.add_edge(node1, node2, power_min)
-    return G     
-      
+    return G       
