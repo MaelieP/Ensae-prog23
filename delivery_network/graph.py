@@ -71,9 +71,23 @@ class Graph:
     def get_path_with_power(self, src, dest, power):
         raise NotImplementedError
     
+    def dfs(self, node, visited_node) :
+        component = [node]
+        for neighbour in self.graph[node] :
+            neighbour = neighbour[0]
+            if not visited_node[neighbour] : 
+                visited_node[neighbour] = True
+                component += self.dfs(neighbour, visited_node)
+        return component
 
     def connected_components(self):
-        raise NotImplementedError
+        components_list = []
+        visited_node = {node:False for node in self.nodes}
+
+        for node in self.nodes :
+            if not visited_node[node] : 
+                components_list.append(self.dfs(node, visited_node))
+        return components_list
 
 
     def connected_components_set(self):
