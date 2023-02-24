@@ -12,3 +12,4 @@ g = Graph([1])
 print(g)
 #piour exécuter  : terminal 
 g.add_edge(2, 1, 18)
+print(g.nodes)
