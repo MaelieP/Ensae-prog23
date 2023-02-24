@@ -69,7 +69,14 @@ class Graph:
     
 
     def get_path_with_power(self, src, dest, power):
-        raise NotImplementedError
+        #On entre deux sommets et notre puissance power du camion, la fonction va retourner None 
+        # si le chemin n'est pas faisable avec cette puissance, ça retourne None, sinon ça retourne le 
+        #chemin à faire pour le trajet
+        self.graph()
+        if src not in self.connected_components(dest) :
+            return None
+
+        elif  
     
     def dfs(self, node, visited_node) :
         component = [node]
