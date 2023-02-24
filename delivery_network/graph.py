@@ -41,9 +41,8 @@ class Graph:
         return output
     
     def add_edge(self, node1, node2, power_min, dist=1):
-        """
+       """
         Adds an edge to the graph. Graphs are not oriented, hence an edge is added to the adjacency list of both end nodes. 
-
         Parameters: 
         -----------
         node1: NodeType
@@ -55,9 +54,18 @@ class Graph:
         dist: numeric (int or float), optional
             Distance between node1 and node2 on the edge. Default is 1.
         """
+    if node1 not in self.graph:
+            self.graph[node1] = []
+            self.nb_nodes += 1
+            self.nodes.append(node1)
+    if node2 not in self.graph:
+            self.graph[node2] = []
+            self.nb_nodes += 1
+            self.nodes.append(node2)
+
+        self.graph[node1].append((node2, power_min, dist))
+        self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
-        self.graphe(node1).append(node2, power_min, dist)
-        self.graph(node2).append(node1, power_min, dist)
     
 
     def get_path_with_power(self, src, dest, power):
