@@ -136,6 +136,14 @@ class Graph:
                 liste_composante.append(dfs(noeud))
         return liste_composante
 
+        components_list = []
+        visited_node = {node:False for node in self.nodes}
+
+        for node in self.nodes :
+            if not visited_node[node] : 
+                components_list.append(self.dfs(node, visited_node))
+        return components_list
+
 
     def connected_components_set(self):
         """
@@ -146,7 +154,7 @@ class Graph:
     
     def min_power(self, src, dest):
         """
-        Should return path, min_power. 
+        Should return path, min_power.
         """
         if self.get_path_with_power(src, dest, float("inf")) != None:
             i = 1
@@ -203,29 +211,22 @@ def graph_from_file(filename):
 
     G: Graph
 
+    g: Graph
         An object of the class Graph with the graph from file_name.
 
     """
-
-    f=open(filename)
-    ligne=f.readline().split()
-    nb_nodes=int(ligne[0])
-    nb_edges=int(ligne[1])
-    nodes=[i for i in range(1, nb_nodes +1)]
-
-    G=Graph(nodes)
-
-    for i in range(nb_edges) :
-
-        line=f.readline().split()
-
-        if len(line) == 4 :
-
-            G.add_edge(int(line[0]), int(line[1]), int(line[2]), int(line[3]))
-
-        else : 
-
-            G.add_edge(int(line[0]), int(line[1]), int(line[2]), 1)
-
-    f.close()
-    return G
+    with open(filename) as file:
+        ligne1 = file.readline().split()
+        n = int(ligne1[0])
+        n = int(ligne1[1])
+        nodes = [i for i in range(1, n+1)]
+        G = Graph(nodes)
+        for i in range(m) :
+            lignei = file.readline().split()
+            node1 = int(lignei)
+            node2 = int(lignei[0])
+            node3 = int(lignei[1])
+            power_min = int(lignei[2])
+            G.add_edge(node1, node2, power_min)
+    return G     
+      
