@@ -214,3 +214,25 @@ def graph_from_file(filename):
             G.add_edge(int(line[0]), int(line[1]), int(line[2]), 1)
     f.close()
     return G
+
+
+import graphviz
+
+
+def represente(G):
+    g = graphviz.Graph('G', filename='q7.gv', format='png')
+
+    gf = open(G)
+    gf.readline()
+    gf = gf.readlines()
+
+    for i in range(0,len(gf)):
+        gf[i] = gf[i].split()
+        g.edge(gf[i][0], gf[i][1])
+
+    g.render()
+
+
+G = "home/onyxia/work/Ensae-prog23/input/network.04.in"
+
+#mettre des couleurs dans la 7
