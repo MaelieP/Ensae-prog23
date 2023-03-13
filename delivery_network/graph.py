@@ -1,3 +1,37 @@
+#cette classe UnionFind nous sera utile dans le td2, pour la question 3
+#elle sert à manipuler les composantes connexes efficacement et facilement
+class UnionFind(object):
+    '''UnionFind Python class.'''
+    def __init__(self, n):
+        assert n > 0, "n doit être strictement positif"
+        self.n = n
+        # cahque sommet est son propre parent au début
+        self.parent = [i for i in range(n)]
+    
+    def find(self, i):
+        '''Find the parent of an element (e.g. the group it belongs to) and compress paths along the way.'''
+        if self.parent[i] != i:
+            # path compression on the way to finding the final parent 
+            # (i.e. the element with a self loop)
+            self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+     
+    def is_connected(self, x, y):
+        '''Check whether X and Y are connected, i.e. they have the same parent.'''
+        if self.find(x) == self.find(y):
+            return True
+        else:
+            return False
+    
+    def union(self, x, y):
+        '''Unite the two elements by uniting their parents.'''
+        xparent = self.find(x)
+        yparent = self.find(y)
+        if xparent != yparent:
+            # if these elements are not yet in the same set,
+            # we will set the y parent to the x parent
+            self.parent[yparent]= xparent
+
 import time
 import sys
 sys.setrecursionlimit(200000)
@@ -221,79 +255,96 @@ class Graph:
                     chemin[i],chemin[n-1-i]=chemin[n-1-i], chemin[i]
                 return chemin
 
-    """def makeset(self, node) :
-        node.parent = node
-        rank(node) = 0"""
-
-    def find(self, node):
-        while node.parent != node:
-            node.parent = node
-        print("Voici node.parent", node.parent)
-        return node.parent
-        
-    def union(self, x, y):
-        Rx = self.find(x)
-        print("Voici Rx", Rx)
-        Ry = self.find(y)
-        print("Voici Ry", Ry)
-
-        if Rx == Ry:
-            return
-
-        if Rx.rank < Ry.rank:
-            Rx.parent = Ry
-        elif Rx.rank > Ry.rank:
-            Ry.parent = Rx
-        else:
-            Ry.parent = Rx
-            Rx.rank += 1
+    
 
     # Fonction pour trouver l'arbre couvrant minimum
-    def kruskal(self):
-        g_mst = []
-        self.edges = sorted(self.edges, key=lambda edge: edge.power_min)
+    def kruskal(self) :
+        """Renvoie un arbre couvrant de poids minimal de self"""
+        #on utilise la class unionfind qui se trouve au début de la page
+        uf=UnionFind(self.nb_nodes) #créationd'une structure Union Find
+        dico=self.graph             
+        Gf=Graph([k for k in range(1,self.nb_nodes)]) #on crée notre nouveau graphe
+        liste_arrete=[] #on va stocker toutes les listes d'arrêtes dans un tableau
+        for i in range (1,self.nb_nodes) :
+            for d in dico[i] : #on parcourt chaque liste associée au sommet i
+                (a,b,c)=d #a=node2, b=power, c=dist
+                if i< a : #on ajoute les arrêtes seulement une fois dans liste_arrete
+                    liste_arrete.append((i,a,b))
+        
+        liste_arrete=sorted(liste_arrete, key=lambda x : x[2]) #on trie la liste des arrêtes en fonction de leur power
+        for arrete in liste_arrete :
+            (i,a,b)=arrete
+            #On ne crée pas de cycles en rajoutant l'arrete (s1,s2) lorsque les deux sommets s1 et s2 ne sont pas dans la même composante connexe
+            #si ils sont dans la même composante connexe alors en rajoutant l'arrête, on crée un cycle car alors deux chemins joignent ces sommets
+            if not uf.is_connected(i-1,a-1) : #si i et a ne sont pas dans les mêmes composantes connexes
+                Gf.add_edge(i, a, b) #on rajoute l'arrête dans le nouveau graphe
+                uf.union(i-1,a-1) # les deux sommets i et a sont maintenant dans la même composante connexe
+        return Gf
 
-        for node in self.nodes:
-            node.parent = node
-            node.rank = 0
+def power_min_kruskal(g, src, dest) :
+    """Renvoie  pour un trajet t=(src, dest) et g un arbre couvrant, la puissance minimale (et un chemin associé) d'un camion pouvant couvrir ce trajet"""
+    # Prérequis : on suppose g est couvrant de poids minimal. 
+    # Ainsi, si le chemin entre src et dest existe, il est unique
+    #on fait un parcours comme on a déjà fait précedemment
+    marquage = [False for i in range(g.nb_nodes)]
+    pred=[-1 for i in range(g.nb_nodes)]
+    def dfs_rec(s) :            
+        marquage[s-1]=True
+        for voisin in g.graph[s] :
+            (i,j,k)=voisin #i : noeud voisin, j puissance minimale, k distance
+            if not (marquage[i-1]) :
+                marquage[i-1]=True
+                pred[i-1]=(s,j) #on stocke des couples dans le tableau de prédecesseurs pour avoir accès à la puissance de l'arrête (s,i) plus simplement
+                dfs_rec(i)
+    dfs_rec(src)
+    if marquage[dest-1]==False :
+        return None
+    chemin = [dest]
+    #on va calculer la puissance minimale nécessaire.
+    #Pour cela, on construit le chemin pour aller de src à dest et on regarde le power de chaque arrête
+    #la puissance minimale vaut le max de ces puissances    
+    p=dest
+    power_min=0
+    while p != src :
+        (p, power)=pred[p-1] #on prend le couple
+        chemin.append(p)        
+        power_min=max(power_min, power) #on regarde si power > power_min, auquel cas il faut augmenter la puissance minimale pour passer
+    n=len(chemin)
+    for i in range(n//2) :            
+        chemin[i],chemin[n-1-i]=chemin[n-1-i], chemin[i]
+    return (chemin, power_min)
 
-        for edge in self.edges:
-            u = edge.u
-            v = edge.v
+def temps_calcul_kruskal(G1, trajet, n=15) :
+    """Renvoie le temps nécessaire pour calculer la puissance minimale sur l'ensemble des trajets en utilisant l'algorithme de Kruskal.
+    Pramamètres :
+    -G1 : type str, nom du fichier du graphe
+    -trajet : type str, nom du fichier où on pioche les trajets
+    -n : indique le nombre de trajets où l'on fait réellement le calcul"""
+    #même principe que pour temps_calcul_naif sauf qu'on passe par l'arbre de Kruskal, pour les explications voir au-dessus
+    g=graph_from_file(G1)
+    G=g.kruskal() #on prend l'arbre de Kruskal
 
-            if self.find(u) != self.find(v):
-                mst.append(edge)
-                self.union(u, v)
-
-        return g_mst
-
-def temps(trajets,nom_fichier, n=2) :
-    G=graph_from_file(nom_fichier)
-    trajets=open(trajets)
+    trajets=open(trajet)
     line=trajets.readline().split()
     nb=int(line[0])
-    temp=[]
-    i=0
-    while i<=n :
+    moy=0
+    i = 0
+    trajets.close()
+    while i < n :
+        trajets=open(trajet)
         traj=random.randint(1,nb)
         for k in range(0, traj-1) :
-            trajets.readline()
-        line=trajets.readline().split()
-        (src, dest)=(int(line[0]),int(line[1]))           
+            trajets.readline()        
+        line=trajets.readline().split()                   
+        (src, dest)=(int(line[0]), int(line[1]))        
         t0=time.perf_counter()
-        G.min_power(src, dest)
+        power_min_kruskal(G,src, dest)
         t=time.perf_counter()-t0
-        temp.append(t)
+        moy+=t
         i+=1
-    print(mean(temp)*nb)
-    return mean(temp)*nb
-### IMPORT TRUC
-
-    # Fonction pour unir deux arbres en utilisant la technique d'union par rang
-
-    
-#INSERE 
-#def kuskral(g) : 
+        trajets.close()  
+   
+    return((moy/n)*float(nb))
 
 def graph_from_file(filename):
     """
@@ -340,15 +391,17 @@ import random
 
 
 
-#import graphviz
+import graphviz
 
-"""def represente(G, src, dest, power=1) :
-    graphe=graph_from_file(G)
-    g=graphviz.Graph(filename='G', format='png', directory="delivery_network", engine='dot')
-    chemin=graphe.get_path_with_power(src, dest, power )
-    gf=open(G, "r")
-    gf.readline()
-    gf=gf.readlines()
+def represente(G, src, dest, power=20) :
+    """Résultat : Crée une image PNG qui est une représentation graphique du graphe de G, ainsi que du chemin associé trouvé"""
+    graphe=graph_from_file(G) #on crée le graphe avec la class Graph associé à G
+    g=graphviz.Graph(filename='G', format='png', directory="delivery_network", engine='dot') #on crée un graphe Graphviz
+    chemin=graphe.get_path_with_power(src, dest, power ) #on trouve un chemin associé à la puissance power,
+    #on aurait pu ne pas mettre power dans les variables et utiliser la fonction min_power
+    gf=open(G, "r") 
+    gf.readline() #on lit la première ligne car elle n'est pas utili
+    gf=gf.readlines() #on lit toutes les lignes
     for i in range(0,len(gf)) :
          
         gf[i]=gf[i].split()
@@ -356,9 +409,13 @@ import random
             g.edge(gf[i][0], gf[i][1], color="green")
         else :
             g.edge(gf[i][0], gf[i][1])
+    
+    print(chemin)
+    if chemin is not None : 
+        for node in chemin : 
+            g.node(str(node), color = 'blue')
     g.render()
-G="input/network.00.in"
-represente(G, 1, 2)"""
+
 
 
 
