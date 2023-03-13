@@ -11,43 +11,15 @@ G1="/home/onyxia/work/Ensae-prog23/input/network.01.in"
 represente(G1, 1, 3) 
 represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
 
-
-
-"""
-#TEST MÉTHODE FIND
-uf = UnionFind(10)
-uf.union(0, 1)
-uf.union(2, 3)
-uf.union(4, 5)
-uf.union(6, 7)
-uf.union(8, 9)
-
-# Expecting 1
-print(uf.find(0))
-# Expecting 1
-print(uf.find(1))
-# Expecting 3
-print(uf.find(2))
-# Expecting 3
-print(uf.find(3))
-# Expecting 5
-print(uf.find(4))
-# Expecting 5
-print(uf.find(5))
-# Expecting 7
-print(uf.find(6))
-# Expecting 7
-print(uf.find(7))
-# Expecting 9
-print(uf.find(8))
-# Expecting 9
-print(uf.find(9))
-
-
-## FIN DU TEST DE LA MÉTHODE FIND 
-"""
-
-
+# On test la fonction kruskal ? 
+g1 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.00.in")
+g2 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.01.in")
+g3 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.02.in")
+g4 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.03.in")
+print("Voici g1.kruskal", g1.kruskal())
+print("Voici g2.kruskal", g2.kruskal())
+print("Voici g3.kruskal", g3.kruskal())
+print("Voici g4.kruskal", g4.kruskal())
 
 
 ##Question 1 du tp2##
