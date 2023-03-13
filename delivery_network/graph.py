@@ -6,8 +6,7 @@ class UnionFind(object):
         assert n > 0, "n doit être strictement positif"
         self.n = n
         # cahque sommet est son propre parent au début
-        for i in range(n) : 
-            self.parent = [i]
+        self.parent = [i for i in range(n)]
     
     def find(self, i):
         '''On trouve le parent d'un élément et on remplace le chemin par le parent '''
@@ -266,7 +265,7 @@ class Graph:
         for i in range (1,self.nb_nodes) :
             for d in dico[i] : #on parcourt chaque liste associée au sommet i
                 (n2,p,dist)=d #n2 = node2, p=power, dist = distance
-                if i< a : #on ajoute les arrêtes seulement une fois dans liste_arrete
+                if i< n2 : #on ajoute les arrêtes seulement une fois dans liste_arrete
                     liste_arrete.append((i,n2,p))
         
         liste_arrete=sorted(liste_arrete, key=lambda x : x[2]) #on trie la liste des arrêtes en fonction de leur power

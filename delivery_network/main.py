@@ -11,9 +11,41 @@ G1="/home/onyxia/work/Ensae-prog23/input/network.01.in"
 represente(G1, 1, 3) 
 represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
 
-g = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.00.in")
-print(g.kruskal)
 
+
+"""
+#TEST MÉTHODE FIND
+uf = UnionFind(10)
+uf.union(0, 1)
+uf.union(2, 3)
+uf.union(4, 5)
+uf.union(6, 7)
+uf.union(8, 9)
+
+# Expecting 1
+print(uf.find(0))
+# Expecting 1
+print(uf.find(1))
+# Expecting 3
+print(uf.find(2))
+# Expecting 3
+print(uf.find(3))
+# Expecting 5
+print(uf.find(4))
+# Expecting 5
+print(uf.find(5))
+# Expecting 7
+print(uf.find(6))
+# Expecting 7
+print(uf.find(7))
+# Expecting 9
+print(uf.find(8))
+# Expecting 9
+print(uf.find(9))
+
+
+## FIN DU TEST DE LA MÉTHODE FIND 
+"""
 
 
 
