@@ -11,12 +11,30 @@ G1="/home/onyxia/work/Ensae-prog23/input/network.01.in"
 represente(G1, 1, 3) 
 represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
 
-# On test la fonction kruskal ? 
+# On test la fonction kruskal  
 g1 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.00.in")
 g2 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.01.in")
 g3 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.02.in")
 g4 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.03.in")
+
+#On applique kruskal à nos graphs (cela revient à connecter tous les nœuds du graph sans faire de cycle)
 print("Voici g1.kruskal", g1.kruskal())
+# Pour ce g1, on obtient comme résultat : 
+#The graph has 10 nodes and 9 edges.
+#1-->[(8, 0, 1), (2, 11, 1), (6, 12, 1)]
+#2-->[(5, 4, 1), (3, 10, 1), (1, 11, 1)]
+#3-->[(4, 4, 1), (2, 10, 1)]
+#4-->[(3, 4, 1), (10, 4, 1)]
+#5-->[(2, 4, 1), (7, 14, 1)]
+#6-->[(1, 12, 1)]
+#7-->[(5, 14, 1)]
+#8-->[(1, 0, 1), (9, 14, 1)]
+#9-->[(8, 14, 1)]
+#10-->[(4, 4, 1)]
+
+#Ce graphe contient les 9 arrêtes qui demandent la puissance de camion 
+# la plus faible et il connecte tous les nœuds sans faire de cycle 
+
 print("Voici g2.kruskal", g2.kruskal())
 print("Voici g3.kruskal", g3.kruskal())
 print("Voici g4.kruskal", g4.kruskal())
