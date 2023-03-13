@@ -265,18 +265,18 @@ class Graph:
         liste_arrete=[] #on va stocker toutes les listes d'arrêtes dans un tableau
         for i in range (1,self.nb_nodes) :
             for d in dico[i] : #on parcourt chaque liste associée au sommet i
-                (a,b,c)=d #a=node2, b=power, c=dist
+                (n2,p,dist)=d #n2 = node2, p=power, dist = distance
                 if i< a : #on ajoute les arrêtes seulement une fois dans liste_arrete
-                    liste_arrete.append((i,a,b))
+                    liste_arrete.append((i,n2,p))
         
         liste_arrete=sorted(liste_arrete, key=lambda x : x[2]) #on trie la liste des arrêtes en fonction de leur power
         for arrete in liste_arrete :
-            (i,a,b)=arrete
+            (i,n2,p)=arrete 
             #On ne crée pas de cycles en rajoutant l'arrete (s1,s2) lorsque les deux sommets s1 et s2 ne sont pas dans la même composante connexe
             #si ils sont dans la même composante connexe alors en rajoutant l'arrête, on crée un cycle car alors deux chemins joignent ces sommets
-            if not uf.connectes(i-1,a-1) : #si i et a ne sont pas dans les mêmes composantes connexes
-                Gf.add_edge(i, a, b) #on rajoute l'arrête dans le nouveau graphe
-                uf.union(i-1,a-1) # les deux sommets i et a sont maintenant dans la même composante connexe
+            if not uf.connectes(i-1,n2-1) : #si i et a ne sont pas dans les mêmes composantes connexes
+                Gf.add_edge(i, n2, p) #on rajoute l'arrête dans le nouveau graphe
+                uf.union(i-1,n2-1) # les deux sommets i et a sont maintenant dans la même composante connexe
         return Gf
 
 def power_min_kruskal(g, src, dest) :
