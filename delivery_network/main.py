@@ -1,4 +1,4 @@
-
+from graph import UnionFind
 from graph import Graph, graph_from_file, temps_calcul_kruskal, power_min_kruskal, represente
 
 ##test de la question 7##
@@ -11,8 +11,8 @@ G1="/home/onyxia/work/Ensae-prog23/input/network.01.in"
 represente(G1, 1, 3) 
 represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
 
-
-g.get_path_with_power 
+g = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.00.in")
+print(g.kruskal)
 
 
 

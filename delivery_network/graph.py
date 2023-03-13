@@ -1,36 +1,34 @@
 #cette classe UnionFind nous sera utile dans le td2, pour la question 3
 #elle sert à manipuler les composantes connexes efficacement et facilement
 class UnionFind(object):
-    '''UnionFind Python class.'''
+    '''classe UnionFind '''
     def __init__(self, n):
         assert n > 0, "n doit être strictement positif"
         self.n = n
         # cahque sommet est son propre parent au début
-        self.parent = [i for i in range(n)]
+        for i in range(n) : 
+            self.parent = [i]
     
     def find(self, i):
-        '''Find the parent of an element (e.g. the group it belongs to) and compress paths along the way.'''
+        '''On trouve le parent d'un élément et on remplace le chemin par le parent '''
         if self.parent[i] != i:
-            # path compression on the way to finding the final parent 
-            # (i.e. the element with a self loop)
+            # on remplace les éléments du chemin par leur parent
             self.parent[i] = self.find(self.parent[i])
         return self.parent[i]
      
-    def is_connected(self, x, y):
-        '''Check whether X and Y are connected, i.e. they have the same parent.'''
+    def connectes(self, x, y):
+        '''On vérifie si x et y sont connectés càd s'ils ont le même parent'''
         if self.find(x) == self.find(y):
             return True
         else:
             return False
     
     def union(self, x, y):
-        '''Unite the two elements by uniting their parents.'''
+        '''On unit deux éléments en réunissant leurs parents'''
         xparent = self.find(x)
         yparent = self.find(y)
         if xparent != yparent:
-            # if these elements are not yet in the same set,
-            # we will set the y parent to the x parent
-            self.parent[yparent]= xparent
+            self.parent[yparent] = xparent
 
 import time
 import sys
@@ -276,7 +274,7 @@ class Graph:
             (i,a,b)=arrete
             #On ne crée pas de cycles en rajoutant l'arrete (s1,s2) lorsque les deux sommets s1 et s2 ne sont pas dans la même composante connexe
             #si ils sont dans la même composante connexe alors en rajoutant l'arrête, on crée un cycle car alors deux chemins joignent ces sommets
-            if not uf.is_connected(i-1,a-1) : #si i et a ne sont pas dans les mêmes composantes connexes
+            if not uf.connectes(i-1,a-1) : #si i et a ne sont pas dans les mêmes composantes connexes
                 Gf.add_edge(i, a, b) #on rajoute l'arrête dans le nouveau graphe
                 uf.union(i-1,a-1) # les deux sommets i et a sont maintenant dans la même composante connexe
         return Gf
