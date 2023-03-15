@@ -456,5 +456,14 @@ def dfs_initial(g) :
     dfs_rec(racine)
     return (pred, prof)
 
-
+def test_kruskal() :
+    """Teste la fonction kruskal avec un graphe qui est un cycle. Le résultat obtenu doit être le même graphe sans la dernière arrête"""
+    G=Graph([k for k in range (1,5)]) 
+    test=Graph([k for k in range (1,5)])
+    for k in range(1,5) :
+        G.add_edge(k, k+1, k)
+        test.add_edge(k,k+1,k)
+    G.add_edge(5, 1, 5) 
+    return(G.kruskal().graph==test.graph)
+#Le résultat obtenu est bien le graphe qu'on voulait avoir
 
