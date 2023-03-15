@@ -1,15 +1,15 @@
 from graph import UnionFind
 from graph import Graph, graph_from_file, temps_calcul_kruskal, power_min_kruskal, represente
 
-##test de la question 7##
 
+##test de la question 7##
 G="/home/onyxia/work/Ensae-prog23/input/network.00.in"
 represente(G, 1, 2)
 represente(G, 8, 6)
 
 G1="/home/onyxia/work/Ensae-prog23/input/network.01.in"
 represente(G1, 1, 3) 
-represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
+#represente(G1, 7, 3) #renvoie bien none car 7 et 3 ne sont pas des composantes connectées 
 
 # On test la fonction kruskal  
 g1 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.00.in")
@@ -18,7 +18,7 @@ g3 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.02.in")
 g4 = graph_from_file("/home/onyxia/work/Ensae-prog23/input/network.03.in")
 
 #On applique kruskal à nos graphs (cela revient à connecter tous les nœuds du graph sans faire de cycle)
-print("Voici g1.kruskal", g1.kruskal())
+print("Voici le graphe de kruskal issu du graphe 00", g1.kruskal())
 # Pour ce g1, on obtient comme résultat : 
 #The graph has 10 nodes and 9 edges.
 #1-->[(8, 0, 1), (2, 11, 1), (6, 12, 1)]
@@ -51,17 +51,16 @@ print("Voici g4.kruskal", g4.kruskal())
 #print(test_kruskal())
 
 
-
 ##question 5 du tp2##
-"""print(temps_calcul_kruskal("input/network.1.in", "input/routes.1.in"))
-print(temps_calcul_kruskal("input/network.2.in", "input/routes.2.in"))
-print(temps_calcul_kruskal("input/network.3.in", "input/routes.3.in"))
-print(temps_calcul_kruskal("input/network.4.in", "input/routes.4.in"))
-print(temps_calcul_kruskal("input/network.5.in", "input/routes.5.in"))
-print(temps_calcul_kruskal("input/network.6.in", "input/routes.6.in"))
-print(temps_calcul_kruskal("input/network.7.in", "input/routes.7.in"))
-print(temps_calcul_kruskal("input/network.8.in", "input/routes.8.in"))
-print(temps_calcul_kruskal("input/network.9.in", "input/routes.9.in"))"""
+print("Le temps mis pour parcourir tous les trajets du graph 1 est", temps_calcul_kruskal("/home/onyxia/work/Ensae-prog23/input/network.1.in", "/home/onyxia/work/Ensae-prog23/input/routes.1.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 2 est", temps_calcul_kruskal("input/network.2.in", "input/routes.2.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 3 est", temps_calcul_kruskal("input/network.3.in", "input/routes.3.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 4 est", temps_calcul_kruskal("input/network.4.in", "input/routes.4.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 5 est", temps_calcul_kruskal("input/network.5.in", "input/routes.5.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 6 est", temps_calcul_kruskal("input/network.6.in", "input/routes.6.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 7 est", temps_calcul_kruskal("input/network.7.in", "input/routes.7.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 8 est", temps_calcul_kruskal("input/network.8.in", "input/routes.8.in"), "heures")
+print("Le temps mis pour parcourir tous les trajets du graph 9 est", temps_calcul_kruskal("input/network.9.in", "input/routes.9.in"), "heures")
 
 #on trouve des temps beaucoup plus courts. Par exemple pour le premier, on trouve 0.002 sec
 #pour le second, on trouve environ 3h
